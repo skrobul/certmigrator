@@ -1,5 +1,6 @@
 from main.models import SSL_Associations_Form
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 def index(request):
     """main view"""
@@ -15,10 +16,13 @@ def index(request):
                             pem = pem_password)
             return render_to_response('succes.html', {
                             'cmd' : commands,
-                            })
+                            },
+                            context_instance=RequestContext(request))
         else:
             form = SSL_Associations_Form()
-            return render_to_response('index.html', dict(form = form)) 
+            return render_to_response('index.html', dict(form = form),
+                            context_instance=RequestContext(request)) 
     else:
         form = SSL_Associations_Form()
-        return render_to_response('index.html', dict(form = form)) 
+        return render_to_response('index.html', dict(form = form), 
+                            context_instance=RequestContext(request)) 

@@ -2,7 +2,12 @@
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 <head>
-    <link rel="stylesheet" href="{{ MEDIA_URL }}/style.css" type="text/css" media="screen" charset="utf-8">
+   <link rel="stylesheet" href="{{ MEDIA_URL }}/css/screen.css" type="text/css" media="screen, projection">
+   <link rel="stylesheet" href="{{ MEDIA_URL }}/css/print.css" type="text/css" media="print"> 
+   <!--[if IE]>
+     <link rel="stylesheet" href="{{ MEDIA_URL }}/css/ie.css" type="text/css" media="screen, projection">
+   <![endif]-->
+   <link rel="stylesheet" href="{{ MEDIA_URL }}/css/style.css" type="text/css" media="screen, projection">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
 {% block title %}
     <title>Certmigrator</title>
