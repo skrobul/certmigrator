@@ -10,12 +10,12 @@ def index(request):
             filelist = get_list_from_file(form.cleaned_data['sslassoc'])
             ftp_record = form.cleaned_data['ftp_record_name']
             pem_password = form.cleaned_data['pem_password']
-            commands = generate_export_commands(
+            export_commands = generate_export_commands(
                             files = filelist,
                             record_name = ftp_record,
                             pem_password = pem_password)
             return render_to_response('success.html', {
-                            'cmd' : commands,
+                            'export_cmd' : export_commands,
                             },
                             context_instance=RequestContext(request))
         else:
@@ -33,9 +33,9 @@ def get_list_from_file(src):
     Returns: list of .pem files
     """
     import re
-    ssl_entry_regexp = re.compile("^ssl associate (rsacert|rsakey) (?P<name>\w+) (?P<filename>\w+\.pem)")
+    ssl_entry_regexp = re.compile("\s*?ssl associate (cert|rsakey) (?P<name>[\w\.-]+) (?P<filename>[\w\.-]+\.pem)")
     certs = []
-    for line in src.split("\n"):
+    for line in src.split("\r\n"):
         ret = ssl_entry_regexp.match(line)
         if ret:
             certs.append(ret.groupdict())
@@ -65,5 +65,5 @@ def generate_export_commands(files, record_name, pem_password):
     cmdlist = [] 
     for file in files:
         cmdlist.append("copy ssl ftp %s import %s PEM '%s'" % (record_name, file['filename'], pem_password))
-    print cmdlist
+    return cmdlist
         

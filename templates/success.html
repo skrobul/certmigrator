@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if cmd %}
- {{ cmd }}
+
+<div id="export_cmds" class="span-12">
+<h2 class="fancy">Export commands </h2>
+{% if export_cmd %}
+ {% autoescape off %}
+ {% for cmd in export_cmd %}<br/>
+ {{ cmd }}{% endfor %}
+{% endautoescape %}
 {% else %}
 No commands!
 {% endif %}
+</div>
+
+<div id="import_cmds" class="span-12 last">
+<h2 class="fancy">Import commands </h2>
+{% if export_cmd %}
+ {% for cmd in export_cmd %}{{ cmd }}<br/>
+ {% endfor %}
+ {% else %}
+No commands!
+{% endif %}
+</div>
 
 {% endblock %}
