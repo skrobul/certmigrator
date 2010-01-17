@@ -14,7 +14,7 @@ def index(request):
                             files = filelist,
                             record_name = ftp_record,
                             pem_password = pem_password)
-            return render_to_response('succes.html', {
+            return render_to_response('success.html', {
                             'cmd' : commands,
                             },
                             context_instance=RequestContext(request))
