@@ -19,7 +19,6 @@ def index(request):
                             },
                             context_instance=RequestContext(request))
         else:
-            form = SSL_Associations_Form()
             return render_to_response('index.html', dict(form = form),
                             context_instance=RequestContext(request)) 
     else:
