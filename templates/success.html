@@ -25,7 +25,7 @@
 
 <div id="howto" class="span-24 last">
  <p class="notice">First of all - if this is live customer be very careful and double check before executing copy commands. If you do something wrong, you can
-    easily take the customer down.
+    easily take the customer down. If you are not sure that you fully understand what you are doing, speak to senior engineer.
  </p>
 </div>
  <div id="howto_import" class="span-11 colborder">
@@ -36,9 +36,12 @@
  <li>Copy the file which you placed on the FTP as a startup config.
       <pre>copy ftp YOURFTP startup-example.cfg startup-config</pre>
  </li>
- <li>Execute <pre>show startup-config</pre> to check if the file you downloaded from FTP contains only the commands that you see above.</li>
+ <li>Execute <pre>show startup-config</pre> to check if the file you downloaded from FTP contains only the commands that you see above.
+     If it does not look like the file which you put on FTP, or there is anything that prevents you from going ahead you can rollback by simply
+     saving the running configuration <pre>write mem</pre></li>
  <li>If everything looks good, go ahead and merge startup config with running config by executing 
      <pre>copy startup-config running-config</pre>
+     This step will execute the commands which were in the file on FTP.
  </li>
  <li>Save the running configuration<pre>write mem</pre></li>
  <li>Verify if it was saved...<pre>show running-config</pre></li>
@@ -58,9 +61,12 @@
  <li>Copy the file which you placed on the FTP as a startup config.
       <pre>copy ftp YOURFTP startup-example.cfg startup-config</pre>
  </li>
- <li>Execute <pre>show startup-config</pre> to check if the file you downloaded from FTP contains only the commands that you see above.</li>
+ <li>Execute <pre>show startup-config</pre> to check if the file you downloaded from FTP contains only the commands that you see above.
+     If it does not look like the file which you put on FTP, or there is anything that prevents you from going ahead you can rollback by simply
+     saving the running configuration <pre>write mem</pre></li>
  <li>If everything looks good, go ahead and merge startup config with running config by executing 
      <pre>copy startup-config running-config</pre>
+     This step will execute the commands which were in the file on FTP.
  </li>
  <li>Save the running configuration<pre>write mem</pre></li>
  <li>Verify if it was saved...<pre>show running-config</pre></li>
