@@ -1,26 +1,69 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div id="export_cmds" class="span-12">
-<h2 class="fancy">Export commands </h2>
 {% if export_cmd %}
+<div id="export_cmds" class="span-12 {% if not import_cmd %}suffix-12 last{%endif%}">
+<h2 class="fancy">Export commands </h2>
  {% autoescape off %}
  {% for cmd in export_cmd %}<br/>
  {{ cmd }}{% endfor %}
 {% endautoescape %}
-{% else %}
-No commands!
+</div>
+{% endif %}
+
+{% if import_cmd %}
+<div id="import_cmds" class="span-12 {% if not export_cmd %}suffix-12 last{%endif%}">
+<h2 class="fancy">Import commands </h2>
+<div class="box">
+ {% for cmd in import_cmd %}{{ cmd }}<br/>
+ {% endfor %}
+</div>
 {% endif %}
 </div>
 
-<div id="import_cmds" class="span-12 last">
-<h2 class="fancy">Import commands </h2>
-{% if export_cmd %}
- {% for cmd in export_cmd %}{{ cmd }}<br/>
- {% endfor %}
- {% else %}
-No commands!
-{% endif %}
+<div id="howto" class="span-24 last">
+ <p class="notice">First of all - if this is live customer be very careful and double check before executing copy commands. If you do something wrong, you can
+    easily take the customer down.
+ </p>
+</div>
+ <div id="howto_import" class="span-11 colborder">
+ <h5>Import howto</h5>
+ <ol>
+ <li>Copy above commands to a text file and place it on the FTP server. Let's assume the name of the file will be <b>startup-example.cfg</b></li>
+ <li>Login to the CSS and execute <pre>archive startup-config</pre></li>
+ <li>Copy the file which you placed on the FTP as a startup config.
+      <pre>copy ftp YOURFTP startup-example.cfg startup-config</pre>
+ </li>
+ <li>Execute <pre>show startup-config</pre> to check if the file you downloaded from FTP contains only the commands that you see above.</li>
+ <li>If everything looks good, go ahead and merge startup config with running config by executing 
+     <pre>copy startup-config running-config</pre>
+ </li>
+ <li>Save the running configuration<pre>write mem</pre></li>
+ <li>Verify if it was saved...<pre>show running-config</pre></li>
+ </ol>
+ </div>
+
+ <div id="howto_export" class="span-12 last">
+ <h5>Export howto</h5>
+ <ol>
+ <li>Copy above commands to a text file and place it on the FTP server. If you
+ want to import from the config station, ensure to verify that ftp-record has a
+ proper credentials . Let's assume the name of the file will be
+ <b>startup-example.cfg</b></li>
+ <li>Login to the CSS and execute <pre>archive startup-config</pre></li>
+ <li>Copy the file which you placed on the FTP as a startup config.
+      <pre>copy ftp YOURFTP startup-example.cfg startup-config</pre>
+ </li>
+ <li>Execute <pre>show startup-config</pre> to check if the file you downloaded from FTP contains only the commands that you see above.</li>
+ <li>If everything looks good, go ahead and merge startup config with running config by executing 
+     <pre>copy startup-config running-config</pre>
+ </li>
+ <li>Save the running configuration<pre>write mem</pre></li>
+ <li>Verify if it was saved...<pre>show running-config</pre></li>
+ <li>Verify if the certificates were imported <pre>show ssl files</pre></li>
+ </ol>
+ </div>
+
 </div>
 
 {% endblock %}

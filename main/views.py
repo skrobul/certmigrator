@@ -10,12 +10,23 @@ def index(request):
             filelist = get_list_from_file(form.cleaned_data['sslassoc'])
             ftp_record = form.cleaned_data['ftp_record_name']
             pem_password = form.cleaned_data['pem_password']
-            export_commands = generate_export_commands(
-                            files = filelist,
-                            record_name = ftp_record,
-                            pem_password = pem_password)
+            type = form.cleaned_data['type']
+            export_commands = import_commands = None
+            if type == 'export' or type == 'both':
+                export_commands = generate_commands(
+                                files = filelist,
+                                record_name = ftp_record,
+                                pem_password = pem_password,
+                                type = 'export')
+            if type == 'import' or type == 'both':
+                import_commands = generate_commands(
+                                files = filelist,
+                                record_name = ftp_record,
+                                pem_password = pem_password,
+                                type = 'import')
             return render_to_response('success.html', {
                             'export_cmd' : export_commands,
+                            'import_cmd' : import_commands,
                             },
                             context_instance=RequestContext(request))
         else:
@@ -41,7 +52,7 @@ def get_list_from_file(src):
             certs.append(ret.groupdict())
     return certs
 
-def generate_export_commands(files, record_name, pem_password):
+def generate_commands(files, record_name, pem_password, type):
     """Generates configuration file that can be uploaded to the CSS as a 
     startup file and then merged with running config in result importing
     all SSL files the loadbalancer.
@@ -64,6 +75,11 @@ def generate_export_commands(files, record_name, pem_password):
     # but uglier...
     cmdlist = [] 
     for file in files:
-        cmdlist.append("copy ssl ftp %s import %s PEM '%s'" % (record_name, file['filename'], pem_password))
+        if type == 'import':
+            cmdlist.append("copy ssl ftp %s import %s PEM '%s'" % (record_name, file['filename'], pem_password))
+        if type == 'export':
+            cmdlist.append("copy ssl ftp %s export %s PEM '%s'" % (record_name, file['filename'], pem_password))
+
+
     return cmdlist
         
