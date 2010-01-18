@@ -3,7 +3,11 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 def index(request):
-    """main view"""
+    """
+    Initial page view. It validates the data entered by the end-user.
+    Once the data is validated it is passed to generate function which
+    creates the commands to be executed on the CSS.
+    """
     if request.method == "POST":
         form = SSL_Associations_Form(request.POST)
         if form.is_valid():
@@ -40,13 +44,15 @@ def index(request):
 def get_list_from_file(src):
     """
     Parses "ssl associate" config lines from the CSS.
-    Args:   string buffer containing CSS configuration
-    Returns: list of .pem files
+    Args:   
+        src - string buffer containing CSS configuration
+    Returns: 
+        list of strings containing .pem file names.
     """
     import re
-    ssl_entry_regexp = re.compile("\s*?ssl associate (cert|rsakey) (?P<name>[\w\.-]+) (?P<filename>[\w\.-]+\.pem)")
+    ssl_entry_regexp = re.compile("\s*?ssl associate (?P<type>cert|rsakey) (?P<name>[\w\.-]+) (?P<filename>[\w\.-]+\.pem)")
     certs = []
-    for line in src.split("\r\n"):
+    for line in src.split("\n"):
         ret = ssl_entry_regexp.match(line)
         if ret:
             certs.append(ret.groupdict())
@@ -62,7 +68,7 @@ def generate_commands(files, record_name, pem_password, type):
                 [
                  {'type' : 'rsacert', 'name' : 'foo', 'filename': 'foo.pem'},
                  {'type' : 'rsacert', 'name' : 'bar', 'filename': 'bar.pem'},
-                 {'type' : 'rsakey', 'name' : 'foobar', 'filename': 'foobar.pem},
+                 {'type' : 'rsakey', 'name' : 'foobar', 'filename': 'foobar.pem'},
                 ]
         record_name - name of the FTP record which will be used in the
                       configuration of CSS for importing certificates from
