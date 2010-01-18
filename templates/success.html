@@ -2,17 +2,19 @@
 {% block content %}
 
 {% if export_cmd %}
-<div id="export_cmds" class="span-12 {% if not import_cmd %}suffix-12 last{%endif%}">
+<div id="export_cmds" class="span-11 {% if not import_cmd %}suffix-12 last{%endif%}">
 <h2 class="fancy">Export commands </h2>
+<div class="box">
  {% autoescape off %}
- {% for cmd in export_cmd %}<br/>
- {{ cmd }}{% endfor %}
+ {% for cmd in export_cmd %}
+ {{ cmd }}<br/>{% endfor %}
 {% endautoescape %}
+</div>
 </div>
 {% endif %}
 
 {% if import_cmd %}
-<div id="import_cmds" class="span-12 {% if not export_cmd %}suffix-12 last{%endif%}">
+<div id="import_cmds" class="span-11 {% if not export_cmd %}suffix-12 last{%endif%}">
 <h2 class="fancy">Import commands </h2>
 <div class="box">
  {% for cmd in import_cmd %}{{ cmd }}<br/>
@@ -40,6 +42,8 @@
  </li>
  <li>Save the running configuration<pre>write mem</pre></li>
  <li>Verify if it was saved...<pre>show running-config</pre></li>
+ <li>Verify if the certificates were imported <pre>show ssl files</pre></li>
+ <li>Please remember that you still need to create "ssl associations" by copying them from old config. You can use the same technique as for executing copy commands.</li>
  </ol>
  </div>
 
@@ -60,7 +64,6 @@
  </li>
  <li>Save the running configuration<pre>write mem</pre></li>
  <li>Verify if it was saved...<pre>show running-config</pre></li>
- <li>Verify if the certificates were imported <pre>show ssl files</pre></li>
  </ol>
  </div>
 
