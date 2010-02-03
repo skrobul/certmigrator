@@ -8,6 +8,7 @@ sslassoc_help = """Paste the configuration of the source CSS here. Actually the 
 ftp_help = """Enter the name of ftp-record that is already configured on the CSS and is representing FTP server from/to which you are importing/exporting the certificates."""
 
 class SSL_Associations_Form(forms.Form):
+   """Main landing page form"""
    ftp_record_name = forms.CharField(
         max_length=31,
         label = "FTP record name",
